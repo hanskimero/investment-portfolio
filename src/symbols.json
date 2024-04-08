@@ -1,0 +1,1054 @@
+[
+    {
+        "symbol": "AAPL",
+        "name": "Apple Inc. Common Stock"
+    },
+    {
+        "symbol": "ABNB",
+        "name": "Airbnb Inc. Class A Common Stock"
+    },
+    {
+        "symbol": "ACGL",
+        "name": "Arch Capital Group Ltd. Common Stock"
+    },
+    {
+        "symbol": "ADBE",
+        "name": "Adobe Inc. Common Stock"
+    },
+    {
+        "symbol": "ADI",
+        "name": "Analog Devices Inc. Common Stock"
+    },
+    {
+        "symbol": "ADP",
+        "name": "Automatic Data Processing Inc. Common Stock"
+    },
+    {
+        "symbol": "ADSK",
+        "name": "Autodesk Inc. Common Stock"
+    },
+    {
+        "symbol": "AEP",
+        "name": "American Electric Power Company Inc. Common Stock"
+    },
+    {
+        "symbol": "AFRM",
+        "name": "Affirm Holdings Inc. Class A Common Stock"
+    },
+    {
+        "symbol": "AGNCM",
+        "name": "AGNC Investment Corp. Depositary Shares rep 6.875% Series D Fixed-to-Floating Cumulative Redeemable Preferred Stock"
+    },
+    {
+        "symbol": "AGNCN",
+        "name": "AGNC Investment Corp. Depositary Shares Each Representing a 1/1000th Interest in a Share of 7.00% Series C Fixed-To-Floating Rate Cumulative Redeemable Preferred Stock"
+    },
+    {
+        "symbol": "AKAM",
+        "name": "Akamai Technologies Inc. Common Stock"
+    },
+    {
+        "symbol": "ALAB",
+        "name": "Astera Labs Inc. Common Stock"
+    },
+    {
+        "symbol": "ALGN",
+        "name": "Align Technology Inc. Common Stock"
+    },
+    {
+        "symbol": "ALNY",
+        "name": "Alnylam Pharmaceuticals Inc. Common Stock"
+    },
+    {
+        "symbol": "AMAT",
+        "name": "Applied Materials Inc. Common Stock"
+    },
+    {
+        "symbol": "AMD",
+        "name": "Advanced Micro Devices Inc. Common Stock"
+    },
+    {
+        "symbol": "AMGN",
+        "name": "Amgen Inc. Common Stock"
+    },
+    {
+        "symbol": "AMZN",
+        "name": "Amazon.com Inc. Common Stock"
+    },
+    {
+        "symbol": "ANSS",
+        "name": "ANSYS Inc. Common Stock"
+    },
+    {
+        "symbol": "APA",
+        "name": "APA Corporation Common Stock"
+    },
+    {
+        "symbol": "APP",
+        "name": "Applovin Corporation Class A Common Stock"
+    },
+    {
+        "symbol": "ARCC",
+        "name": "Ares Capital Corporation Common Stock"
+    },
+    {
+        "symbol": "ARGX",
+        "name": "argenx SE American Depositary Shares"
+    },
+    {
+        "symbol": "ARM",
+        "name": "Arm Holdings plc American Depositary Shares"
+    },
+    {
+        "symbol": "ASML",
+        "name": "ASML Holding N.V. New York Registry Shares"
+    },
+    {
+        "symbol": "AVGO",
+        "name": "Broadcom Inc. Common Stock"
+    },
+    {
+        "symbol": "AXON",
+        "name": "Axon Enterprise Inc. Common Stock"
+    },
+    {
+        "symbol": "AZN",
+        "name": "AstraZeneca PLC American Depositary Shares"
+    },
+    {
+        "symbol": "AZPN",
+        "name": "Aspen Technology Inc. Common Stock"
+    },
+    {
+        "symbol": "BGNE",
+        "name": "BeiGene Ltd. American Depositary Shares"
+    },
+    {
+        "symbol": "BIDU",
+        "name": "Baidu Inc. ADS"
+    },
+    {
+        "symbol": "BIIB",
+        "name": "Biogen Inc. Common Stock"
+    },
+    {
+        "symbol": "BKNG",
+        "name": "Booking Holdings Inc. Common Stock"
+    },
+    {
+        "symbol": "BKR",
+        "name": "Baker Hughes Company Class A Common Stock"
+    },
+    {
+        "symbol": "BMRN",
+        "name": "BioMarin Pharmaceutical Inc. Common Stock"
+    },
+    {
+        "symbol": "BNTX",
+        "name": "BioNTech SE American Depositary Share"
+    },
+    {
+        "symbol": "BPYPM",
+        "name": "Brookfield Property Partners L.P. 6.25% Class A Cumulative Redeemable Preferred Units Series 1"
+    },
+    {
+        "symbol": "BPYPN",
+        "name": "Brookfield Property Partners L.P. 5.750% Class A Cumulative Redeemable Perpetual Preferred Units Series 3"
+    },
+    {
+        "symbol": "BPYPO",
+        "name": "Brookfield Property Partners L.P. 6.375% Class A Cumulative Redeemable Perpetual Preferred Units Series 2"
+    },
+    {
+        "symbol": "BPYPP",
+        "name": "Brookfield Property Partners L.P. 6.50% Class A Cumulative Redeemable Perpetual Preferred Units"
+    },
+    {
+        "symbol": "BRKR",
+        "name": "Bruker Corporation Common Stock"
+    },
+    {
+        "symbol": "BSY",
+        "name": "Bentley Systems Incorporated Class B Common Stock"
+    },
+    {
+        "symbol": "CART",
+        "name": "Maplebear Inc. Common Stock"
+    },
+    {
+        "symbol": "CASY",
+        "name": "Casey's General Stores Inc. Common Stock"
+    },
+    {
+        "symbol": "CCEP",
+        "name": "Coca-Cola Europacific Partners plc Ordinary Shares"
+    },
+    {
+        "symbol": "CDNS",
+        "name": "Cadence Design Systems Inc. Common Stock"
+    },
+    {
+        "symbol": "CDW",
+        "name": "CDW Corporation Common Stock"
+    },
+    {
+        "symbol": "CEG",
+        "name": "Constellation Energy Corporation Common Stock"
+    },
+    {
+        "symbol": "CELH",
+        "name": "Celsius Holdings Inc. Common Stock"
+    },
+    {
+        "symbol": "CG",
+        "name": "The Carlyle Group Inc. Common Stock"
+    },
+    {
+        "symbol": "CHK",
+        "name": "Chesapeake Energy Corporation Common Stock"
+    },
+    {
+        "symbol": "CHKEW",
+        "name": "Chesapeake Energy Corporation Class A Warrants"
+    },
+    {
+        "symbol": "CHKP",
+        "name": "Check Point Software Technologies Ltd. Ordinary Shares"
+    },
+    {
+        "symbol": "CHTR",
+        "name": "Charter Communications Inc. Class A Common Stock"
+    },
+    {
+        "symbol": "CINF",
+        "name": "Cincinnati Financial Corporation Common Stock"
+    },
+    {
+        "symbol": "CMCSA",
+        "name": "Comcast Corporation Class A Common Stock"
+    },
+    {
+        "symbol": "CME",
+        "name": "CME Group Inc. Class A Common Stock"
+    },
+    {
+        "symbol": "COIN",
+        "name": "Coinbase Global Inc. Class A Common Stock"
+    },
+    {
+        "symbol": "COO",
+        "name": "The Cooper Companies Inc. Common Stock"
+    },
+    {
+        "symbol": "COST",
+        "name": "Costco Wholesale Corporation Common Stock"
+    },
+    {
+        "symbol": "CPRT",
+        "name": "Copart Inc. (DE) Common Stock"
+    },
+    {
+        "symbol": "CRWD",
+        "name": "CrowdStrike Holdings Inc. Class A Common Stock"
+    },
+    {
+        "symbol": "CSCO",
+        "name": "Cisco Systems Inc. Common Stock (DE)"
+    },
+    {
+        "symbol": "CSGP",
+        "name": "CoStar Group Inc. Common Stock"
+    },
+    {
+        "symbol": "CSX",
+        "name": "CSX Corporation Common Stock"
+    },
+    {
+        "symbol": "CTAS",
+        "name": "Cintas Corporation Common Stock"
+    },
+    {
+        "symbol": "CTSH",
+        "name": "Cognizant Technology Solutions Corporation Class A Common Stock"
+    },
+    {
+        "symbol": "CYBR",
+        "name": "CyberArk Software Ltd. Ordinary Shares"
+    },
+    {
+        "symbol": "DASH",
+        "name": "DoorDash Inc. Class A Common Stock"
+    },
+    {
+        "symbol": "DDOG",
+        "name": "Datadog Inc. Class A Common Stock"
+    },
+    {
+        "symbol": "DKNG",
+        "name": "DraftKings Inc. Class A Common Stock"
+    },
+    {
+        "symbol": "DLTR",
+        "name": "Dollar Tree Inc. Common Stock"
+    },
+    {
+        "symbol": "DOCU",
+        "name": "DocuSign Inc. Common Stock"
+    },
+    {
+        "symbol": "DOX",
+        "name": "Amdocs Limited Ordinary Shares"
+    },
+    {
+        "symbol": "DXCM",
+        "name": "DexCom Inc. Common Stock"
+    },
+    {
+        "symbol": "EA",
+        "name": "Electronic Arts Inc. Common Stock"
+    },
+    {
+        "symbol": "EBAY",
+        "name": "eBay Inc. Common Stock"
+    },
+    {
+        "symbol": "ENPH",
+        "name": "Enphase Energy Inc. Common Stock"
+    },
+    {
+        "symbol": "ENTG",
+        "name": "Entegris Inc. Common Stock"
+    },
+    {
+        "symbol": "EQIX",
+        "name": "Equinix Inc. Common Stock REIT"
+    },
+    {
+        "symbol": "ERIC",
+        "name": "Ericsson American Depositary Shares"
+    },
+    {
+        "symbol": "ERIE",
+        "name": "Erie Indemnity Company Class A Common Stock"
+    },
+    {
+        "symbol": "EVRG",
+        "name": "Evergy Inc. Common Stock"
+    },
+    {
+        "symbol": "EWBC",
+        "name": "East West Bancorp Inc. Common Stock"
+    },
+    {
+        "symbol": "EXAS",
+        "name": "Exact Sciences Corporation Common Stock"
+    },
+    {
+        "symbol": "EXC",
+        "name": "Exelon Corporation Common Stock"
+    },
+    {
+        "symbol": "EXPE",
+        "name": "Expedia Group Inc. Common Stock"
+    },
+    {
+        "symbol": "FANG",
+        "name": "Diamondback Energy Inc. Common Stock"
+    },
+    {
+        "symbol": "FAST",
+        "name": "Fastenal Company Common Stock"
+    },
+    {
+        "symbol": "FCNCA",
+        "name": "First Citizens BancShares Inc. Class A Common Stock"
+    },
+    {
+        "symbol": "FFIV",
+        "name": "F5 Inc. Common Stock"
+    },
+    {
+        "symbol": "FITB",
+        "name": "Fifth Third Bancorp Common Stock"
+    },
+    {
+        "symbol": "FITBI",
+        "name": "Fifth Third Bancorp Depositary Shares"
+    },
+    {
+        "symbol": "FITBO",
+        "name": "Fifth Third Bancorp Depositary Shares each representing a 1/1000th ownership interest in a share of Non-Cumulative Perpetual Preferred Stock Series K"
+    },
+    {
+        "symbol": "FITBP",
+        "name": "Fifth Third Bancorp Depositary Shares each representing 1/40th share of Fifth Third 6.00% Non-Cumulative Perpetual Class B Preferred Stock Series A"
+    },
+    {
+        "symbol": "FLEX",
+        "name": "Flex Ltd. Ordinary Shares"
+    },
+    {
+        "symbol": "FOX",
+        "name": "Fox Corporation Class B Common Stock"
+    },
+    {
+        "symbol": "FOXA",
+        "name": "Fox Corporation Class A Common Stock"
+    },
+    {
+        "symbol": "FSLR",
+        "name": "First Solar Inc. Common Stock"
+    },
+    {
+        "symbol": "FTNT",
+        "name": "Fortinet Inc. Common Stock"
+    },
+    {
+        "symbol": "FWONA",
+        "name": "Liberty Media Corporation Series A Liberty Formula One Common Stock"
+    },
+    {
+        "symbol": "FWONK",
+        "name": "Liberty Media Corporation Series C Liberty Formula One Common Stock"
+    },
+    {
+        "symbol": "GEHC",
+        "name": "GE HealthCare Technologies Inc. Common Stock"
+    },
+    {
+        "symbol": "GEN",
+        "name": "Gen Digital Inc. Common Stock"
+    },
+    {
+        "symbol": "GFS",
+        "name": "GlobalFoundries Inc. Ordinary Shares"
+    },
+    {
+        "symbol": "GILD",
+        "name": "Gilead Sciences Inc. Common Stock"
+    },
+    {
+        "symbol": "GLPI",
+        "name": "Gaming and Leisure Properties Inc. Common Stock"
+    },
+    {
+        "symbol": "GMAB",
+        "name": "Genmab A/S ADS"
+    },
+    {
+        "symbol": "GOOG",
+        "name": "Alphabet Inc. Class C Capital Stock"
+    },
+    {
+        "symbol": "GOOGL",
+        "name": "Alphabet Inc. Class A Common Stock"
+    },
+    {
+        "symbol": "GRAB",
+        "name": "Grab Holdings Limited Class A Ordinary Shares"
+    },
+    {
+        "symbol": "HBAN",
+        "name": "Huntington Bancshares Incorporated Common Stock"
+    },
+    {
+        "symbol": "HBANM",
+        "name": "Huntington Bancshares Incorporated Depositary Shares each representing a 1/1000th interest in a share of Huntington Series I Preferred Stock"
+    },
+    {
+        "symbol": "HBANP",
+        "name": "Huntington Bancshares Incorporated Depositary Shares 4.500% Series H Non-Cumulative Perpetual Preferred Stock"
+    },
+    {
+        "symbol": "HOLX",
+        "name": "Hologic Inc. Common Stock"
+    },
+    {
+        "symbol": "HON",
+        "name": "Honeywell International Inc. Common Stock"
+    },
+    {
+        "symbol": "HOOD",
+        "name": "Robinhood Markets Inc. Class A Common Stock"
+    },
+    {
+        "symbol": "HST",
+        "name": "Host Hotels & Resorts Inc. Common Stock"
+    },
+    {
+        "symbol": "HTHT",
+        "name": "H World Group Limited American Depositary Shares"
+    },
+    {
+        "symbol": "IBKR",
+        "name": "Interactive Brokers Group Inc. Class A Common Stock"
+    },
+    {
+        "symbol": "ICLR",
+        "name": "ICON plc Ordinary Shares"
+    },
+    {
+        "symbol": "IDXX",
+        "name": "IDEXX Laboratories Inc. Common Stock"
+    },
+    {
+        "symbol": "ILMN",
+        "name": "Illumina Inc. Common Stock"
+    },
+    {
+        "symbol": "INCY",
+        "name": "Incyte Corp. Common Stock"
+    },
+    {
+        "symbol": "INTC",
+        "name": "Intel Corporation Common Stock"
+    },
+    {
+        "symbol": "INTU",
+        "name": "Intuit Inc. Common Stock"
+    },
+    {
+        "symbol": "ISRG",
+        "name": "Intuitive Surgical Inc. Common Stock"
+    },
+    {
+        "symbol": "JBHT",
+        "name": "J.B. Hunt Transport Services Inc. Common Stock"
+    },
+    {
+        "symbol": "JD",
+        "name": "JD.com Inc. American Depositary Shares"
+    },
+    {
+        "symbol": "JKHY",
+        "name": "Jack Henry & Associates Inc. Common Stock"
+    },
+    {
+        "symbol": "KDP",
+        "name": "Keurig Dr Pepper Inc. Common Stock"
+    },
+    {
+        "symbol": "KHC",
+        "name": "The Kraft Heinz Company Common Stock"
+    },
+    {
+        "symbol": "KLAC",
+        "name": "KLA Corporation Common Stock"
+    },
+    {
+        "symbol": "KSPI",
+        "name": "Joint Stock Company Kaspi.kz American Depository Shares"
+    },
+    {
+        "symbol": "LAMR",
+        "name": "Lamar Advertising Company Class A Common Stock"
+    },
+    {
+        "symbol": "LECO",
+        "name": "Lincoln Electric Holdings Inc. Common Shares"
+    },
+    {
+        "symbol": "LEGN",
+        "name": "Legend Biotech Corporation American Depositary Shares"
+    },
+    {
+        "symbol": "LI",
+        "name": "Li Auto Inc. American Depositary Shares"
+    },
+    {
+        "symbol": "LIN",
+        "name": "Linde plc Ordinary Shares"
+    },
+    {
+        "symbol": "LKQ",
+        "name": "LKQ Corporation Common Stock"
+    },
+    {
+        "symbol": "LNT",
+        "name": "Alliant Energy Corporation Common Stock"
+    },
+    {
+        "symbol": "LOGI",
+        "name": "Logitech International S.A. Ordinary Shares"
+    },
+    {
+        "symbol": "LPLA",
+        "name": "LPL Financial Holdings Inc. Common Stock"
+    },
+    {
+        "symbol": "LRCX",
+        "name": "Lam Research Corporation Common Stock"
+    },
+    {
+        "symbol": "LSCC",
+        "name": "Lattice Semiconductor Corporation Common Stock"
+    },
+    {
+        "symbol": "LULU",
+        "name": "lululemon athletica inc. Common Stock"
+    },
+    {
+        "symbol": "MANH",
+        "name": "Manhattan Associates Inc. Common Stock"
+    },
+    {
+        "symbol": "MAR",
+        "name": "Marriott International Class A Common Stock"
+    },
+    {
+        "symbol": "MBLY",
+        "name": "Mobileye Global Inc. Class A Common Stock"
+    },
+    {
+        "symbol": "MCHP",
+        "name": "Microchip Technology Incorporated Common Stock"
+    },
+    {
+        "symbol": "MDB",
+        "name": "MongoDB Inc. Class A Common Stock"
+    },
+    {
+        "symbol": "MDLZ",
+        "name": "Mondelez International Inc. Class A Common Stock"
+    },
+    {
+        "symbol": "MEDP",
+        "name": "Medpace Holdings Inc. Common Stock"
+    },
+    {
+        "symbol": "MELI",
+        "name": "MercadoLibre Inc. Common Stock"
+    },
+    {
+        "symbol": "META",
+        "name": "Meta Platforms Inc. Class A Common Stock"
+    },
+    {
+        "symbol": "MNDY",
+        "name": "monday.com Ltd. Ordinary Shares"
+    },
+    {
+        "symbol": "MNST",
+        "name": "Monster Beverage Corporation"
+    },
+    {
+        "symbol": "MORN",
+        "name": "Morningstar Inc. Common Stock"
+    },
+    {
+        "symbol": "MPWR",
+        "name": "Monolithic Power Systems Inc. Common Stock"
+    },
+    {
+        "symbol": "MRNA",
+        "name": "Moderna Inc. Common Stock"
+    },
+    {
+        "symbol": "MRVL",
+        "name": "Marvell Technology Inc. Common Stock"
+    },
+    {
+        "symbol": "MSFT",
+        "name": "Microsoft Corporation Common Stock"
+    },
+    {
+        "symbol": "MSTR",
+        "name": "MicroStrategy Incorporated Common Stock Class A"
+    },
+    {
+        "symbol": "MU",
+        "name": "Micron Technology Inc. Common Stock"
+    },
+    {
+        "symbol": "NBIX",
+        "name": "Neurocrine Biosciences Inc. Common Stock"
+    },
+    {
+        "symbol": "NDAQ",
+        "name": "Nasdaq Inc. Common Stock"
+    },
+    {
+        "symbol": "NDSN",
+        "name": "Nordson Corporation Common Stock"
+    },
+    {
+        "symbol": "NFLX",
+        "name": "Netflix Inc. Common Stock"
+    },
+    {
+        "symbol": "NICE",
+        "name": "NICE Ltd American Depositary Shares"
+    },
+    {
+        "symbol": "NTES",
+        "name": "NetEase Inc. American Depositary Shares"
+    },
+    {
+        "symbol": "NTNX",
+        "name": "Nutanix Inc. Class A Common Stock"
+    },
+    {
+        "symbol": "NTRA",
+        "name": "Natera Inc. Common Stock"
+    },
+    {
+        "symbol": "NTRS",
+        "name": "Northern Trust Corporation Common Stock"
+    },
+    {
+        "symbol": "NVDA",
+        "name": "NVIDIA Corporation Common Stock"
+    },
+    {
+        "symbol": "NWS",
+        "name": "News Corporation Class B Common Stock"
+    },
+    {
+        "symbol": "NWSA",
+        "name": "News Corporation Class A Common Stock"
+    },
+    {
+        "symbol": "NXPI",
+        "name": "NXP Semiconductors N.V. Common Stock"
+    },
+    {
+        "symbol": "ODFL",
+        "name": "Old Dominion Freight Line Inc. Common Stock"
+    },
+    {
+        "symbol": "OKTA",
+        "name": "Okta Inc. Class A Common Stock"
+    },
+    {
+        "symbol": "ON",
+        "name": "ON Semiconductor Corporation Common Stock"
+    },
+    {
+        "symbol": "ORLY",
+        "name": "O'Reilly Automotive Inc. Common Stock"
+    },
+    {
+        "symbol": "OTEX",
+        "name": "Open Text Corporation Common Shares"
+    },
+    {
+        "symbol": "PAA",
+        "name": "Plains All American Pipeline L.P. Common Units representing Limited Partner Interests"
+    },
+    {
+        "symbol": "PANW",
+        "name": "Palo Alto Networks Inc. Common Stock"
+    },
+    {
+        "symbol": "PARAA",
+        "name": "Paramount Global Class A Common Stock"
+    },
+    {
+        "symbol": "PAYX",
+        "name": "Paychex Inc. Common Stock"
+    },
+    {
+        "symbol": "PCAR",
+        "name": "PACCAR Inc. Common Stock"
+    },
+    {
+        "symbol": "PDD",
+        "name": "PDD Holdings Inc. American Depositary Shares"
+    },
+    {
+        "symbol": "PEP",
+        "name": "PepsiCo Inc. Common Stock"
+    },
+    {
+        "symbol": "PFG",
+        "name": "Principal Financial Group Inc Common Stock"
+    },
+    {
+        "symbol": "PODD",
+        "name": "Insulet Corporation Common Stock"
+    },
+    {
+        "symbol": "POOL",
+        "name": "Pool Corporation Common Stock"
+    },
+    {
+        "symbol": "PTC",
+        "name": "PTC Inc. Common Stock"
+    },
+    {
+        "symbol": "PYPL",
+        "name": "PayPal Holdings Inc. Common Stock"
+    },
+    {
+        "symbol": "QCOM",
+        "name": "QUALCOMM Incorporated Common Stock"
+    },
+    {
+        "symbol": "QRTEP",
+        "name": "Qurate Retail Inc. 8.0% Fixed Rate Cumulative Redeemable Preferred Stock"
+    },
+    {
+        "symbol": "QRVO",
+        "name": "Qorvo Inc. Common Stock"
+    },
+    {
+        "symbol": "REG",
+        "name": "Regency Centers Corporation Common Stock"
+    },
+    {
+        "symbol": "REGN",
+        "name": "Regeneron Pharmaceuticals Inc. Common Stock"
+    },
+    {
+        "symbol": "RGEN",
+        "name": "Repligen Corporation Common Stock"
+    },
+    {
+        "symbol": "RIVN",
+        "name": "Rivian Automotive Inc. Class A Common Stock"
+    },
+    {
+        "symbol": "ROP",
+        "name": "Roper Technologies Inc. Common Stock"
+    },
+    {
+        "symbol": "ROST",
+        "name": "Ross Stores Inc. Common Stock"
+    },
+    {
+        "symbol": "RPRX",
+        "name": "Royalty Pharma plc Class A Ordinary Shares"
+    },
+    {
+        "symbol": "RYAAY",
+        "name": "Ryanair Holdings plc American Depositary Shares"
+    },
+    {
+        "symbol": "SAIA",
+        "name": "Saia Inc. Common Stock"
+    },
+    {
+        "symbol": "SBAC",
+        "name": "SBA Communications Corporation Class A Common Stock"
+    },
+    {
+        "symbol": "SBUX",
+        "name": "Starbucks Corporation Common Stock"
+    },
+    {
+        "symbol": "SIRI",
+        "name": "Sirius XM Holdings Inc. Common Stock"
+    },
+    {
+        "symbol": "SLMBP",
+        "name": "SLM Corporation Floating Rate Non-Cumulative Preferred Stock Series B"
+    },
+    {
+        "symbol": "SMCI",
+        "name": "Super Micro Computer Inc. Common Stock"
+    },
+    {
+        "symbol": "SNPS",
+        "name": "Synopsys Inc. Common Stock"
+    },
+    {
+        "symbol": "SNY",
+        "name": "Sanofi ADS"
+    },
+    {
+        "symbol": "SRAD",
+        "name": "Sportradar Group AG Class A Ordinary Shares"
+    },
+    {
+        "symbol": "SRPT",
+        "name": "Sarepta Therapeutics Inc. Common Stock (DE)"
+    },
+    {
+        "symbol": "SSNC",
+        "name": "SS&C Technologies Holdings Inc. Common Stock"
+    },
+    {
+        "symbol": "STLD",
+        "name": "Steel Dynamics Inc."
+    },
+    {
+        "symbol": "STX",
+        "name": "Seagate Technology Holdings PLC Ordinary Shares (Ireland)"
+    },
+    {
+        "symbol": "SWAV",
+        "name": "Shockwave Medical Inc. Common Stock"
+    },
+    {
+        "symbol": "SWKS",
+        "name": "Skyworks Solutions Inc. Common Stock"
+    },
+    {
+        "symbol": "SYM",
+        "name": "Symbotic Inc. Class A Common Stock"
+    },
+    {
+        "symbol": "TCOM",
+        "name": "Trip.com Group Limited American Depositary Shares"
+    },
+    {
+        "symbol": "TEAM",
+        "name": "Atlassian Corporation Class A Common Stock"
+    },
+    {
+        "symbol": "TECH",
+        "name": "Bio-Techne Corp Common Stock"
+    },
+    {
+        "symbol": "TER",
+        "name": "Teradyne Inc. Common Stock"
+    },
+    {
+        "symbol": "TMUS",
+        "name": "T-Mobile US Inc. Common Stock"
+    },
+    {
+        "symbol": "TPG",
+        "name": "TPG Inc. Class A Common Stock"
+    },
+    {
+        "symbol": "TRMB",
+        "name": "Trimble Inc. Common Stock"
+    },
+    {
+        "symbol": "TROW",
+        "name": "T. Rowe Price Group Inc. Common Stock"
+    },
+    {
+        "symbol": "TSCO",
+        "name": "Tractor Supply Company Common Stock"
+    },
+    {
+        "symbol": "TSLA",
+        "name": "Tesla Inc. Common Stock"
+    },
+    {
+        "symbol": "TTD",
+        "name": "The Trade Desk Inc. Class A Common Stock"
+    },
+    {
+        "symbol": "TTWO",
+        "name": "Take-Two Interactive Software Inc. Common Stock"
+    },
+    {
+        "symbol": "TW",
+        "name": "Tradeweb Markets Inc. Class A Common Stock"
+    },
+    {
+        "symbol": "TXN",
+        "name": "Texas Instruments Incorporated Common Stock"
+    },
+    {
+        "symbol": "TXRH",
+        "name": "Texas Roadhouse Inc. Common Stock"
+    },
+    {
+        "symbol": "UAL",
+        "name": "United Airlines Holdings Inc. Common Stock"
+    },
+    {
+        "symbol": "ULTA",
+        "name": "Ulta Beauty Inc. Common Stock"
+    },
+    {
+        "symbol": "UTHR",
+        "name": "United Therapeutics Corporation Common Stock"
+    },
+    {
+        "symbol": "VFS",
+        "name": "VinFast Auto Ltd. Ordinary Shares"
+    },
+    {
+        "symbol": "VLYPO",
+        "name": "Valley National Bancorp 5.50% Fixed-to-Floating Rate Non-Cumulative Perpetual Preferred Stock Series B"
+    },
+    {
+        "symbol": "VLYPP",
+        "name": "Valley National Bancorp 6.25% Fixed-to-Floating Rate Non-Cumulative Perpetual Preferred Stock Series A"
+    },
+    {
+        "symbol": "VOD",
+        "name": "Vodafone Group Plc American Depositary Shares"
+    },
+    {
+        "symbol": "VRSK",
+        "name": "Verisk Analytics Inc. Common Stock"
+    },
+    {
+        "symbol": "VRSN",
+        "name": "VeriSign Inc. Common Stock"
+    },
+    {
+        "symbol": "VRTX",
+        "name": "Vertex Pharmaceuticals Incorporated Common Stock"
+    },
+    {
+        "symbol": "VTRS",
+        "name": "Viatris Inc. Common Stock"
+    },
+    {
+        "symbol": "WBA",
+        "name": "Walgreens Boots Alliance Inc. Common Stock"
+    },
+    {
+        "symbol": "WBD",
+        "name": "Warner Bros. Discovery Inc. Series A Common Stock"
+    },
+    {
+        "symbol": "WDAY",
+        "name": "Workday Inc. Class A Common Stock"
+    },
+    {
+        "symbol": "WDC",
+        "name": "Western Digital Corporation Common Stock"
+    },
+    {
+        "symbol": "WING",
+        "name": "Wingstop Inc. Common Stock"
+    },
+    {
+        "symbol": "WMG",
+        "name": "Warner Music Group Corp. Class A Common Stock"
+    },
+    {
+        "symbol": "WTW",
+        "name": "Willis Towers Watson Public Limited Company Ordinary Shares"
+    },
+    {
+        "symbol": "WYNN",
+        "name": "Wynn Resorts Limited Common stock"
+    },
+    {
+        "symbol": "XEL",
+        "name": "Xcel Energy Inc. Common Stock"
+    },
+    {
+        "symbol": "XP",
+        "name": "XP Inc. Class A Common Stock"
+    },
+    {
+        "symbol": "Z",
+        "name": "Zillow Group Inc. Class C Capital Stock"
+    },
+    {
+        "symbol": "ZBRA",
+        "name": "Zebra Technologies Corporation Class A Common Stock"
+    },
+    {
+        "symbol": "ZG",
+        "name": "Zillow Group Inc. Class A Common Stock"
+    },
+    {
+        "symbol": "ZM",
+        "name": "Zoom Video Communications Inc. Class A Common Stock"
+    },
+    {
+        "symbol": "ZS",
+        "name": "Zscaler Inc. Common Stock"
+    }
+]
