@@ -14,7 +14,7 @@ interface formData {
   quantity? : string,
   price? : string,
   fee? : string,
-  date : Date,
+  date : string,
   type : string,
 
 }
@@ -30,10 +30,11 @@ const AddTransaction : React.FC = () : React.ReactElement => {
     const [searchQuery, setSearchQuery] = useState('');
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [suggestions, setSuggestions] = useState<{ symbol: string; name: string; }[]>([]);
+    const [pickerDate, setPickerDate] = useState(new Date());
 
     const [formData, setFormData] = useState<formData>({
       type: 'Buy',
-      date: new Date(),
+      date: new Date().toISOString(),
     });
 
     const [dataComplete, setDataComplete] = useState<Boolean>(false);
@@ -81,9 +82,11 @@ const AddTransaction : React.FC = () : React.ReactElement => {
   
     const onDateChange = (event, selectedDate) => {
       
+      setPickerDate(selectedDate);
+
       setFormData((prevData) => ({
         ...prevData,
-        date : selectedDate,
+        date : selectedDate.toISOString(),
       }));
       
     }
@@ -124,7 +127,9 @@ const AddTransaction : React.FC = () : React.ReactElement => {
 
       addTransaction(formData);
 
-      setFormData( { type: 'Buy', date: new Date()} )
+      setFormData( { type: 'Buy', date: new Date().toISOString()} )
+
+      setPickerDate(new Date());
 
       navigation.navigate('Portfolio' as never);
 
@@ -152,7 +157,7 @@ const AddTransaction : React.FC = () : React.ReactElement => {
         // Function to reset form data
         const resetFormData = () => {
           setFormData({
-            date: new Date(),
+            date: new Date().toISOString(),
             type: 'Buy',
           });
         };
@@ -208,7 +213,7 @@ const AddTransaction : React.FC = () : React.ReactElement => {
         <Text style={styles.labelText}>Transaction date:</Text>
         <View style={styles.rowContainer}>
         <RNDateTimePicker
-            value={formData.date}
+            value={pickerDate}
             mode={'date'}
             onChange={onDateChange}
             maximumDate={new Date()}

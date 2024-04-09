@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useEffect } from "react";
 import Constants from "expo-constants";
 
-const API_KEY = Constants?.expoConfig?.extra?.ALPHA_VANTAGE_API_KEY;
+//const API_KEY = Constants?.expoConfig?.extra?.ALPHA_VANTAGE_API_KEY;
 
 const Start : React.FC = () : React.ReactElement => {
 
@@ -15,7 +15,7 @@ const Start : React.FC = () : React.ReactElement => {
 
     const { stocksList, errors, isLoading, closeValues, getValues, getPortfolio } = useContext(PortfolioContext);
 
-    console.log('CloseValues: ', closeValues);
+    //console.log('CloseValues: ', closeValues);
 
     const handleBuy = (stock : any) => {
 
@@ -90,7 +90,7 @@ const Start : React.FC = () : React.ReactElement => {
                   return (
                       <List.Item
                           key={index}
-                          title={stock.name.length > 12 ? stock.name.substring(0, 12) + "..." : stock.name}
+                          title={stock.name.length > 12 ? stock.quantity + " " + stock.name.substring(0, 12) + "..." :  stock.quantity + " " + stock.name}
                           style={styles.listItem}
                           left={() => (
                               <View style={styles.iconButtonsContainer}>

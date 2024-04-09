@@ -3,6 +3,7 @@ import Constants from "expo-constants";
 import * as SQLite from 'expo-sqlite';
 import { db, initDatabase } from '../database';
 import { get } from 'http';
+import { useFocusEffect } from '@react-navigation/native';
 
 
 export const PortfolioContext : React.Context<any> = createContext(undefined);
@@ -21,6 +22,16 @@ export interface Error {
     failure? : string
 }
 
+interface Transaction {
+    id: number;
+    date: string;
+    fees: number | null;
+    price: number;
+    quantity: number;
+    stockId: number;
+    totalAmount: number | null;
+    type: string;
+}
 
 interface Props {
     children : React.ReactNode;
@@ -104,11 +115,12 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
                 `SELECT * FROM Stock WHERE symbol = ?`, [symbol], 
                 (_tx : SQLite.SQLTransaction, rs : SQLite.SQLResultSet) => {
                     if (rs.rows.length > 0) {
-                        const existingStock = rs.rows.item(0);
-                        resolve(existingStock);
+                        const stockId = rs.rows.item(0).id;
+                        resolve(stockId);
                     } else {
                         resolve(null); // ei löytynyt
                     }
+                    
                 });
             }, 
             (err: SQLite.SQLError) => {
@@ -125,7 +137,7 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
     const getStockTransactions = async (stockId : number, type : string) => {
 
         return new Promise((resolve, reject) => {
-
+            //tarkista sorttausjärjestys
             db.transaction(
             (tx : SQLite.SQLTransaction) => {
                 tx.executeSql(
@@ -150,15 +162,24 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
         });
     }
 
-    const sellStock = async (existingStock : any, sellQuota: number) => {
+    const sellStock = async (existingStock : number, sellQuota: number) => {
         
-        const buyTransactions  = await getStockTransactions(existingStock.id, 'Buy');
+        console.log('Existing stock:', existingStock);
+
+        const buyTransactions  = await getStockTransactions(existingStock, 'Buy') as Transaction[];
+
+        console.log('Buy transactions:', buyTransactions);
+
+        if (!buyTransactions) {
+            console.log('No buy transactions found');
+            return; // Exit the function if there are no buy transactions
+        }
 
         let sellQuantity = sellQuota;
 
-        for (const buyTransaction of buyTransactions) {
-
-            const { id, quantity : buyQuantity, price : buyPrice } = buyTransaction;
+        for (let i = 0; i < buyTransactions.length; i++) {
+            const buyTransaction = buyTransactions[i];
+            const { id, quantity : buyQuantity } = buyTransaction;
             
             if (sellQuantity <= 0) {
                 break;
@@ -166,7 +187,10 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
 
             if (buyQuantity >= sellQuantity) {
 
+                console.log('buyQuantity covers sellQuota', buyQuantity, sellQuantity)
+
                 if (buyQuantity === sellQuantity) {
+                    console.log('buyQuantity equals sellQuota, deleting transaction');
                     db.transaction(
                         (tx : SQLite.SQLTransaction) => {
                             tx.executeSql(
@@ -181,6 +205,7 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
                         }
                     );
                 } else {
+                    console.log('buyQuantity larger than sellQuantity updating transaction');
                     db.transaction(
                         (tx : SQLite.SQLTransaction) => {
                             tx.executeSql(
@@ -196,9 +221,12 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
                     );
                 }
 
+                console.log('Setting sellQuantity to 0');
+
                 sellQuantity = 0;
             
             } else {
+                console.log('buyQuantity smaller than sellQuantity, deleting transaction');
 
                 db.transaction(
                     (tx : SQLite.SQLTransaction) => {
@@ -214,6 +242,8 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
                     }
                 );
 
+                console.log('Subtracting buyQuantity from sellQuantity');
+
                 sellQuantity -= buyQuantity;
             }
         }
@@ -221,127 +251,185 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
 
     }
 
+    const insertNewStock = async (transaction : any) => {
+
+        console.log('Inserting new stock');
+
+        db.transaction(
+            (tx : SQLite.SQLTransaction) => {
+              tx.executeSql(
+                `INSERT INTO Stock (symbol, name, avgPrice, quantity)
+                VALUES (?, ?, ?, ?)`,
+                [transaction.symbol, transaction.name, transaction.price, transaction.quantity], 
+                (_tx : SQLite.SQLTransaction, rs : SQLite.SQLResultSet) => {
+                    console.log('Transaction inserted successfully');
+                    setErrors({});
+                });
+            }, 
+            (err: SQLite.SQLError) => {
+
+                console.log(err);
+                setErrors((prevErrors) => ({ ...prevErrors, failure: 'Failed to add transaction' }));
+         
+            }
+        );
+
+    }
+
+
+    const insertTransaction = async (stockId : number, transaction : any) => {
+
+        return new Promise<void>((resolve, reject) => {
+
+            db.transaction(
+                (tx : SQLite.SQLTransaction) => {
+                tx.executeSql(
+                    `INSERT INTO Transactions (type, date, quantity, price, fees, totalAmount, stockId)
+                    VALUES (?, ?, ?, ?, ?, ?, ?)`,
+                    [transaction.type, transaction.date, transaction.quantity, transaction.price, transaction.fees, transaction.price * transaction.quantity + transaction.fees, stockId], 
+                    (_tx : SQLite.SQLTransaction, rs : SQLite.SQLResultSet) => {
+                        console.log('Transaction inserted successfully');
+                        setErrors({});
+                        resolve();
+                    });
+                }, 
+                (err: SQLite.SQLError) => {
+
+                    console.log(err);
+                    setErrors((prevErrors) => ({ ...prevErrors, failure: 'Failed to add transaction' }));
+                    reject(err);
+
+                }
+            );
+
+        });
+    }
+
+    const updateStockData = (stockId : number) => {
+        console.log('Updating stock data');
+
+        //const stockStatistics : { [stockId : number]: { totalQuantity : number, totalPrice : number } } = {};
+    
+        return new Promise<void>((resolve, reject) => {
+            db.transaction(
+                (tx) => {
+                    tx.executeSql(
+                        `SELECT stockId, quantity, price FROM Transactions WHERE type = 'Buy' AND stockId = ?`,
+                        [stockId],
+                        (tx, rs) => {
+                            //const stockStatistics = {};
+                            let totalQuantity = 0;
+                            let totalPrice = 0;
+    
+                            for (let i = 0; i < rs.rows.length; i++) {
+                                const transaction = rs.rows.item(i);
+                                //const stockId = transaction.stockId;
+                                const quantity = transaction.quantity;
+                                const price = transaction.price;
+
+                                totalQuantity += quantity;
+                                totalPrice += quantity * price;
+    
+                             
+                            }
+
+                            const avgPrice = totalPrice / totalQuantity;
+                        
+                            db.transaction(
+                                (tx) => {
+                                    tx.executeSql(
+                                        `UPDATE Stock SET avgPrice = ?, quantity = ? WHERE id = ?`,
+                                        [avgPrice, totalQuantity, stockId],
+                                        () => {
+                                            console.log('Stock updated for stockId:', stockId);
+                                            resolve();
+                                        },
+                                        (tx, err) => {
+                                            console.log(err);
+                                            reject('Failed to update stock');
+                                            return true;
+                                        }
+                                    );
+                                },
+                                (err) => {
+                                    console.log(err);
+                                    reject('Failed to update stock');
+                                    return true;
+                                }
+                            );
+                        },
+                        (err) => {
+                            console.log(err);
+                            reject('Some error');
+                            return true;
+                        }
+                    );
+                },
+                (err) => {
+                    console.log(err);
+                    reject('Some error');
+                }
+            );
+        });
+    };
+    
+
     const addTransaction = async (transaction : any) => {
         
         setIsLoading(true);
 
         setErrors((prevErrors) => ({ ...prevErrors, failure: '' }));
 
+        let newStockId : number = 0;
+
         try {
 
-            const existingStock = await getExistingStock(transaction.symbol);
+            const existingStock = await getExistingStock(transaction.symbol) as number;
+
+            console.log('Existing stock in addTransaction:', existingStock);
 
             if (existingStock) {
 
                 if (transaction.type === 'Sell') {
 
-                    sellStock(existingStock, transaction.quantity);
+                    await sellStock(existingStock, transaction.quantity);
                 }
+
+                //insert transaction to transactions table
+                await insertTransaction(existingStock, transaction);
                 
             } else {
                 //täysin uusi osake salkkuun
                 
+                await insertNewStock(transaction);
+
+                //insert transaction to transactions table
+                newStockId = await getExistingStock(transaction.symbol) as number;
+                await insertTransaction(newStockId, transaction);
             }
 
-            //lisää transaktio tietokantaan
+            //update stock data
+            await updateStockData(existingStock || newStockId);
 
-            //laske päivitetyt määrät ja keskihinta
+            await getPortfolio();
 
 
         } catch (error) {
+
+            console.error(error);
+            setErrors((prevErrors) => ({ ...prevErrors, failure: 'Failed to add transaction' }));
 
         } finally {
 
             setIsLoading(false);
         }
 
-        // try {
-
-        //     db.transaction(
-        //         (tx : SQLite.SQLTransaction) => {
-        //           tx.executeSql(
-        //             `INSERT INTO Transactions (type, date, quantity, price, fees, totalAmount, stockId)
-        //             VALUES (?, ?, ?, ?, ?, ?, ?)`,
-        //             [transaction.type, transaction.date, transaction.quantity, transaction.price, transaction.fees, transaction.totalAmount, transaction.stockId], 
-        //             (_tx : SQLite.SQLTransaction, rs : SQLite.SQLResultSet) => {
-        //                 console.log('Transaction inserted successfully');
-        //                 setErrors({});
-        //               getPortfolio();
-        //             });
-        //         }, 
-        //         (err: SQLite.SQLError) => {
-
-        //             console.log(err);
-        //             setErrors((prevErrors) => ({ ...prevErrors, failure: 'Failed to add transaction' }));
-         
-        //         }
-        //     );
-
-        // } catch (error) {
-
-        //     console.error(error);
-        //     setErrors((prevErrors) => ({ ...prevErrors, failure: 'Failed connection' }));
-
-        // } finally {
-
-        //     setIsLoading(false);
-        // }
-
-
-        //try {
-
-        //     const connection = await fetch("http://192.168.68.57:3009/api/portfolio", {
-        //         method: "POST",
-        //         headers: {
-        //             "Content-Type": "application/json"
-        //         },
-        //         body: JSON.stringify(transaction)
-        //     });
-
-        //     console.log(connection.status);
-
-        //     if (connection.ok) {
-
-        //         setErrors({})
-        //         getPortfolio();
-                
-        //     } else {
-        //         console.error('Failed to add transaction');
-        //         setErrors((prevErrors) => ({ ...prevErrors, failure: 'Failed to add transaction' }));
-        //     }
-
-        // } catch (error) {
-        //     console.error(error);
-        //     setErrors((prevErrors) => ({ ...prevErrors, failure: 'Failed connection' }));
-        // } finally {
-
-        //     setIsLoading(false);
-        
-        // }
     }
 
-    const updateStockData = async (tx: SQLite.SQLTransaction, transaction: any) => {
-
-        try {
-
-
-            if () {
-                //if there is existing st
-            }
-
-        } catch (error) {
-
-        }
-
-    }
-    
-    const getValues =  async () => {
-
-        const symbols : string[] = stocksList.map(stock => stock.symbol);
-        console.log('symbols mapped:', symbols);
-
-        setErrors((prevErrors) => ({ ...prevErrors, failure: '' }));
+    const getValues = async () => {
        
+        const symbols = stocksList.map((stock) => stock.symbol);
+
         try {
 
             const requests = symbols.map((symbol : any) => 
@@ -370,6 +458,8 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
     }
 
     const getPortfolio = async () => {
+
+        console.log('Getting portfolio');
         
         setIsLoading(true);
         setErrors((prevErrors) => ({ ...prevErrors, failure: '' }));
@@ -401,30 +491,8 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
 
             setIsLoading(false);
         }
-
-
-        // try {
-
-        //     console.log('sending request to server');
-        //     //tarkista, että ip on oikea
-        //     const connection = await fetch("http://192.168.68.57:3009/api/portfolio");
-
-        //     const data = await connection.json();
-
-        //     setErrors({});
-
-        //     setStocksList(data);
-
-        // } catch (error) {
-
-        //     console.error(error);
-        //     setErrors((prevErrors) => ({ ...prevErrors, failure: 'Failed connection' }));
-        // } finally {
-        //     setIsLoading(false);
-        // }
         
-    
-      };
+    }
     
     
     useEffect(() => {
