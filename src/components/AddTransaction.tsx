@@ -13,8 +13,8 @@ interface formData {
   name? : string,
   quantity? : string,
   price? : string,
-  fee? : string,
-  date : Date,
+  fees? : string,
+  date : string,
   type : string,
 
 }
@@ -30,10 +30,11 @@ const AddTransaction : React.FC = () : React.ReactElement => {
     const [searchQuery, setSearchQuery] = useState('');
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [suggestions, setSuggestions] = useState<{ symbol: string; name: string; }[]>([]);
+    const [pickerDate, setPickerDate] = useState(new Date());
 
     const [formData, setFormData] = useState<formData>({
       type: 'Buy',
-      date: new Date(),
+      date: new Date().toISOString(),
     });
 
     const [dataComplete, setDataComplete] = useState<Boolean>(false);
@@ -81,9 +82,11 @@ const AddTransaction : React.FC = () : React.ReactElement => {
   
     const onDateChange = (event, selectedDate) => {
       
+      setPickerDate(selectedDate);
+
       setFormData((prevData) => ({
         ...prevData,
-        date : selectedDate,
+        date : selectedDate.toISOString(),
       }));
       
     }
@@ -99,7 +102,7 @@ const AddTransaction : React.FC = () : React.ReactElement => {
         case 'price':
           isValid = validateTransactionPrice(value);
           break;
-        case 'fee':
+        case 'fees':
            isValid = validateTransactionFee(value);
           break;
         case 'type':
@@ -124,7 +127,9 @@ const AddTransaction : React.FC = () : React.ReactElement => {
 
       addTransaction(formData);
 
-      setFormData( { type: 'Buy', date: new Date()} )
+      setFormData( { type: 'Buy', date: new Date().toISOString()} )
+
+      setPickerDate(new Date());
 
       navigation.navigate('Portfolio' as never);
 
@@ -132,7 +137,7 @@ const AddTransaction : React.FC = () : React.ReactElement => {
 
     //tarkista onko tämä tarpeellinen?
     useEffect(() => {
-      const isFormDataComplete = !!formData.symbol && !!formData.quantity && !!formData.price && !!formData.fee && !!formData.date;
+      const isFormDataComplete = !!formData.symbol && !!formData.quantity && !!formData.price && !!formData.fees && !!formData.date;
       setDataComplete(isFormDataComplete);
     }, [formData]);
 
@@ -152,7 +157,7 @@ const AddTransaction : React.FC = () : React.ReactElement => {
         // Function to reset form data
         const resetFormData = () => {
           setFormData({
-            date: new Date(),
+            date: new Date().toISOString(),
             type: 'Buy',
           });
         };
@@ -208,7 +213,7 @@ const AddTransaction : React.FC = () : React.ReactElement => {
         <Text style={styles.labelText}>Transaction date:</Text>
         <View style={styles.rowContainer}>
         <RNDateTimePicker
-            value={formData.date}
+            value={pickerDate}
             mode={'date'}
             onChange={onDateChange}
             maximumDate={new Date()}
@@ -235,14 +240,14 @@ const AddTransaction : React.FC = () : React.ReactElement => {
           clearButtonMode={formData.price ? 'always' : 'never'}
         />
         {errors.price && <Text style={styles.errorText}>{errors.price}</Text>}
-        <Text style={styles.labelText}>Costs:</Text>
+        <Text style={styles.labelText}>Fees:</Text>
         <TextInput
           placeholder="Enter fees"
-          value={formData.fee}
-          onChangeText={(value: string) => formHandler('fee', value)}
+          value={formData.fees}
+          onChangeText={(value: string) => formHandler('fees', value)}
           keyboardType="numeric"
           style={styles.inputField}
-          clearButtonMode={formData.fee ? 'always' : 'never'}
+          clearButtonMode={formData.fees ? 'always' : 'never'}
         />
         {errors.fee && <Text style={styles.errorText}>{errors.fee}</Text>}
 
