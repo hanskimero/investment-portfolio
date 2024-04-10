@@ -225,7 +225,11 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
                         db.transaction(
                             (tx: SQLite.SQLTransaction) => {
                                 tx.executeSql(
-                                    `UPDATE Transactions SET quantity = ? WHERE id = ?`, [buyQuantity - sellQuantity, id],
+                                    `UPDATE Transactions 
+                                    SET quantity = ?, 
+                                        totalAmount = totalAmount - (? * price) 
+                                        WHERE id = ?`, 
+                                    [buyQuantity - sellQuantity, sellQuantity, id],
                                     (_tx: SQLite.SQLTransaction, rs: SQLite.SQLResultSet) => {
                                         console.log('Transaction updated');
                                         resolve(); // Resolve the promise when the transaction is completed
@@ -459,7 +463,7 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
             //update stock data
             await updateStockData(existingStock || newStockId);
             await updateStockData(existingStock);
-            
+
             await getPortfolio();
 
 
