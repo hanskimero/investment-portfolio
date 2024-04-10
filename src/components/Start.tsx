@@ -13,7 +13,7 @@ const Start : React.FC = () : React.ReactElement => {
 
     const navigation = useNavigation();
 
-    const { stocksList, errors, isLoading, closeValues, getValues, getPortfolio } = useContext(PortfolioContext);
+    const { stocksList, errors, isLoading, closeValues, getValues, getPortfolio, transactionData } = useContext(PortfolioContext);
 
     //console.log('CloseValues: ', closeValues);
 
@@ -28,6 +28,9 @@ const Start : React.FC = () : React.ReactElement => {
       navigation.navigate("New transaction" as never, { stock: stock, type: "Sell" });
 
     };
+
+    console.log('Stockslist:', stocksList);
+    console.log('TransactionData:', transactionData);
 
     return (
         <View style={styles.container}>

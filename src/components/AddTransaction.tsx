@@ -13,7 +13,7 @@ interface formData {
   name? : string,
   quantity? : string,
   price? : string,
-  fee? : string,
+  fees? : string,
   date : string,
   type : string,
 
@@ -102,7 +102,7 @@ const AddTransaction : React.FC = () : React.ReactElement => {
         case 'price':
           isValid = validateTransactionPrice(value);
           break;
-        case 'fee':
+        case 'fees':
            isValid = validateTransactionFee(value);
           break;
         case 'type':
@@ -137,7 +137,7 @@ const AddTransaction : React.FC = () : React.ReactElement => {
 
     //tarkista onko tämä tarpeellinen?
     useEffect(() => {
-      const isFormDataComplete = !!formData.symbol && !!formData.quantity && !!formData.price && !!formData.fee && !!formData.date;
+      const isFormDataComplete = !!formData.symbol && !!formData.quantity && !!formData.price && !!formData.fees && !!formData.date;
       setDataComplete(isFormDataComplete);
     }, [formData]);
 
@@ -240,14 +240,14 @@ const AddTransaction : React.FC = () : React.ReactElement => {
           clearButtonMode={formData.price ? 'always' : 'never'}
         />
         {errors.price && <Text style={styles.errorText}>{errors.price}</Text>}
-        <Text style={styles.labelText}>Costs:</Text>
+        <Text style={styles.labelText}>Fees:</Text>
         <TextInput
           placeholder="Enter fees"
-          value={formData.fee}
-          onChangeText={(value: string) => formHandler('fee', value)}
+          value={formData.fees}
+          onChangeText={(value: string) => formHandler('fees', value)}
           keyboardType="numeric"
           style={styles.inputField}
-          clearButtonMode={formData.fee ? 'always' : 'never'}
+          clearButtonMode={formData.fees ? 'always' : 'never'}
         />
         {errors.fee && <Text style={styles.errorText}>{errors.fee}</Text>}
 
