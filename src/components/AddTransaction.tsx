@@ -1,8 +1,8 @@
 import { FlatList, Keyboard, StyleSheet } from "react-native";
-import { View, Text, ScrollView, StatusBar, TextInput, TouchableWithoutFeedback} from "react-native";
-import { Appbar, Button, Modal, Portal, List, PaperProvider, Dialog, RadioButton } from "react-native-paper";
+import { View, Text,  TextInput, TouchableWithoutFeedback} from "react-native";
+import { Button, List, RadioButton, Title } from "react-native-paper";
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { PortfolioContext, StockInfo } from "../context/PortfolioContext";
+import { PortfolioContext} from "../context/PortfolioContext";
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigation, useRoute, useFocusEffect } from '@react-navigation/native';
 import symbolsData from '../symbols.json'
@@ -16,7 +16,6 @@ interface formData {
   fees? : string,
   date : string,
   type : string,
-
 }
 
 const AddTransaction : React.FC = () : React.ReactElement => {
@@ -118,9 +117,6 @@ const AddTransaction : React.FC = () : React.ReactElement => {
         [fieldName]: value,
       }));
 
-      const isFormDataComplete = Object.values(formData).every((value) => !!value);
-      setDataComplete(isValid && isFormDataComplete);
-
     }
 
     const handleSubmit = () => {
@@ -135,12 +131,14 @@ const AddTransaction : React.FC = () : React.ReactElement => {
 
     }
 
-    //tarkista onko tämä tarpeellinen?
+    //follows formdata changes and checks if all fields are filled
     useEffect(() => {
       const isFormDataComplete = !!formData.symbol && !!formData.quantity && !!formData.price && !!formData.fees && !!formData.date;
-      setDataComplete(isFormDataComplete);
+      const noErrors = !errors.quantity && !errors.price && !errors.fee;
+      setDataComplete(noErrors && isFormDataComplete);
     }, [formData]);
 
+    // sets formdata base when navigating from excisting stock
     useEffect(() => {
       if (stock && type) {
         setFormData((prevData) => ({
@@ -152,9 +150,10 @@ const AddTransaction : React.FC = () : React.ReactElement => {
       }
     }, [stock, type]);
 
+    // Reset form data when navigating away from the component
     useFocusEffect(
       React.useCallback(() => {
-        // Function to reset form data
+      
         const resetFormData = () => {
           setFormData({
             date: new Date().toISOString(),
@@ -162,22 +161,22 @@ const AddTransaction : React.FC = () : React.ReactElement => {
           });
         };
   
-        // Cleanup function
         return () => {
-          // Reset formData when navigating away from the component
           resetFormData();
         };
       }, [])
     );
 
-    console.log('formData:', formData);
-    console.log('errors:', errors);
-
     return (
       <TouchableWithoutFeedback onPress={handlePress}>
       <View style={styles.container}>
         <View style={styles.addContainer}>
+          {/* Render the title if stock and type exist */}
+        {stock && type && (
+          <Title>{formData.name}</Title>
+        )}
         
+        {/* Transaction type selection */}
         <Text style={styles.labelText}>Select transaction type:</Text>
         <View style={styles.rowContainer}>
           <RadioButton.Group onValueChange={(value) => formHandler('type', value)} value={formData.type!}>
@@ -187,7 +186,8 @@ const AddTransaction : React.FC = () : React.ReactElement => {
             </View>
           </RadioButton.Group>
         </View>
-        
+
+        {/* Company selection */}
         <Text style={styles.labelText}>Company:</Text>
         <TextInput
           placeholder="Enter stock symbol or name"
@@ -210,6 +210,7 @@ const AddTransaction : React.FC = () : React.ReactElement => {
           )}
           />
 
+        {/* Date selection */}
         <Text style={styles.labelText}>Transaction date:</Text>
         <View style={styles.rowContainer}>
         <RNDateTimePicker
@@ -220,6 +221,8 @@ const AddTransaction : React.FC = () : React.ReactElement => {
             style={styles.datePicker}
           />
         </View>
+
+        {/* Count */}
         <Text style={styles.labelText}>Count:</Text>
         <TextInput
           placeholder="Enter count"
@@ -230,6 +233,8 @@ const AddTransaction : React.FC = () : React.ReactElement => {
           clearButtonMode={formData.quantity ? 'always' : 'never'}
         />
         {errors.quantity && <Text style={styles.errorText}>{errors.quantity}</Text>}
+
+        {/* Unit Price */}
         <Text style={styles.labelText}>Unit Price:</Text>
         <TextInput
           placeholder="Enter unit price"
@@ -240,6 +245,8 @@ const AddTransaction : React.FC = () : React.ReactElement => {
           clearButtonMode={formData.price ? 'always' : 'never'}
         />
         {errors.price && <Text style={styles.errorText}>{errors.price}</Text>}
+
+        {/* Fees */}
         <Text style={styles.labelText}>Fees:</Text>
         <TextInput
           placeholder="Enter fees"
@@ -261,9 +268,7 @@ const AddTransaction : React.FC = () : React.ReactElement => {
         </View>
         </TouchableWithoutFeedback> 
  
-    )
-        
-        
+    );  
     }
 
     export default AddTransaction;
@@ -306,6 +311,6 @@ const AddTransaction : React.FC = () : React.ReactElement => {
           fontWeight: 'bold',
           color: '#333',
         },
-        
+       
             
     });

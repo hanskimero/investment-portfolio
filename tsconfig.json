@@ -4,8 +4,19 @@
     "esModuleInterop": true,
     "target": "es2017",
     "module": "commonjs",
-    "jsx": "react-native"
+    "jsx": "react-native",
+    "moduleResolution": "node",
+    "baseUrl": "./",
+    "paths": {
+      "*": [
+        "node_modules/*"
+      ]
+    }
   },
+  "include": [
+    "src",
+    "tests/**/*.ts"
+  ],
   "exclude": [
     "node_modules",
     "expo"

@@ -2,9 +2,6 @@ import React, { createContext, useEffect, useRef, useState } from 'react';
 import Constants from "expo-constants";
 import * as SQLite from 'expo-sqlite';
 import { db, initDatabase } from '../database';
-import { get } from 'http';
-import { useFocusEffect } from '@react-navigation/native';
-
 
 export const PortfolioContext : React.Context<any> = createContext(undefined);
 
@@ -49,24 +46,27 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
     const [closeValues, setCloseValues] = useState<any[]>([]);
     const [transactionData, setTransactionData] = useState<Transaction[]>([]);
 
-    const validateTransactionCount = (symbol : string, quantity : string, type : string) : boolean => {
-        //tarkistetaan, että osakkeita on positiivinen määrä, kokonaisluku
-        //mikäli myynti, tarkistetaan, että osakkeita on tarpeeksi
-
-        const trimmedQuantity = quantity.trim();
-
+    const validateTransactionCount = (symbol: string, quantity: string, type: string): boolean => {
+    
+        const trimmedQuantity = quantity.trim()
+    
         if (trimmedQuantity === '') {
             setErrors((prevErrors) => ({ ...prevErrors, quantity: 'Please enter quantity' }));
             return false;
         }
 
-        const quantityParsed = parseFloat(trimmedQuantity.replace(',', '.'));
-
-        if (isNaN(quantityParsed) || quantityParsed < 1 || !(Number.isInteger(quantityParsed))) {
-            setErrors((prevErrors) => ({ ...prevErrors, quantity: 'Please enter integer' }));
+        if (trimmedQuantity.includes(',') || trimmedQuantity.includes('.') || /^0\d+$/.test(trimmedQuantity) || /^\d+$/.test(trimmedQuantity) === false) {
+            setErrors((prevErrors) => ({ ...prevErrors, quantity: 'Please enter a valid quantity' }));
             return false;
         }
-
+ 
+        const quantityParsed = parseInt(trimmedQuantity);
+    
+        if (isNaN(quantityParsed) || quantityParsed < 1 || !Number.isInteger(quantityParsed)) {
+            setErrors((prevErrors) => ({ ...prevErrors, quantity: 'Please enter a valid integer quantity' }));
+            return false;
+        }
+    
         if (type === 'Sell') {
             const stock = stocksList.find((stock) => stock.symbol === symbol);
             if (stock && stock.quantity < quantityParsed) {
@@ -74,14 +74,26 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
                 return false;
             }
         }
-
-        setErrors((prevErrors) => ({ ...prevErrors, quantity: '' }));  
+    
+        setErrors((prevErrors) => ({ ...prevErrors, quantity: '' }));
         return true;
     }
 
     const validateTransactionPrice = (price : string) : boolean => {
+
+        const trimmedPrice = price.trim();
+
+        if (trimmedPrice === '') {
+            setErrors((prevErrors) => ({ ...prevErrors, price: 'Please enter price' }));
+            return false;
+        }
+
+        if (/^00|^0\d+/.test(trimmedPrice)) {
+            setErrors((prevErrors) => ({ ...prevErrors, price: 'Please enter a valid price' }));
+            return false;
+        }
         
-        const priceParsed = parseFloat(price.replace(',', '.'));
+        const priceParsed = parseFloat(trimmedPrice.replace(',', '.'));
 
         if (isNaN(priceParsed) || !(priceParsed > 0)) {
             setErrors((prevErrors) => ({ ...prevErrors, price: 'Please enter number greater than 0' }));
@@ -94,11 +106,23 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
 
 
     const validateTransactionFee = (fee : string) : boolean => {
+
+        const trimmedFee = fee.trim();
+
+        if (trimmedFee === '') {
+            setErrors((prevErrors) => ({ ...prevErrors, fee: 'Please enter fee' }));
+            return false;
+        }
+
+        if (/^00|^0\d+/.test(trimmedFee)) {
+            setErrors((prevErrors) => ({ ...prevErrors, fee: 'Please enter a valid price' }));
+            return false;
+        }
         
         const feeParsed = parseFloat(fee.replace(',', '.'));
 
-        if (isNaN(feeParsed)) {
-            setErrors((prevErrors) => ({ ...prevErrors, fee: 'Please enter a number' }));
+        if (isNaN(feeParsed) || feeParsed < 0) {
+            setErrors((prevErrors) => ({ ...prevErrors, fee: 'Please enter a valid number' }));
             return false ;
         }
 
@@ -106,6 +130,46 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
         return true;
     }
 
+    const calculateStockValue = (stock : StockInfo) => {
+      
+        let percentageChange : number = NaN;
+  
+        if (!closeValues || closeValues.length === 0) {
+          return {
+              value: 'N/A',
+              percentageChange: null,
+              percentageChangeStyle: null
+          };
+        }
+  
+        const closeValueObj = closeValues.find((item: any) => item.symbol === stock.symbol);
+        const value = closeValueObj ? parseFloat(closeValueObj.closeValue) * stock.quantity : stock.quantity * stock.avgPrice;
+        
+        if (closeValueObj) {
+          percentageChange = ((value - (stock.quantity * stock.avgPrice)) / (stock.quantity * stock.avgPrice)) * 100;
+        } else {
+            return{
+                value: 'N/A',
+                percentageChange: null,
+                percentageChangeStyle: null
+            }
+        }
+        
+        let percentageChangeStyle : 'positive' | 'negative' | null;
+        if (!isNaN(percentageChange)) {
+          percentageChangeStyle = percentageChange >= 0 ? 'positive' : 'negative';
+        } else {
+          percentageChangeStyle = null;
+        }
+    
+        return {
+            value: value.toLocaleString('fi-FI', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' USD',
+            percentageChange: isNaN(percentageChange) ? null : percentageChange.toFixed(2) + ' %',
+            percentageChangeStyle: percentageChangeStyle
+        };
+    };
+
+    // Get the stockId of an existing stock
     const getExistingStock = async (symbol : string) => {
 
         return new Promise((resolve, reject) => {
@@ -119,7 +183,7 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
                         const stockId = rs.rows.item(0).id;
                         resolve(stockId);
                     } else {
-                        resolve(null); // ei löytynyt
+                        resolve(null);
                     }
                     
                 });
@@ -135,20 +199,22 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
         });
     }
 
+    // Get transactions for a stock
     const getStockTransactions = async (stockId : number, type : string) => {
 
         return new Promise((resolve, reject) => {
-            //tarkista sorttausjärjestys
+            
             db.transaction(
             (tx : SQLite.SQLTransaction) => {
                 tx.executeSql(
-                `SELECT * FROM Transactions WHERE stockId = ? AND type = ?`, [stockId, type], 
+                `SELECT * FROM Transactions WHERE stockId = ? AND type = ? ORDER BY date ASC`, 
+                [stockId, type], 
                 (_tx : SQLite.SQLTransaction, rs : SQLite.SQLResultSet) => {
                     if (rs.rows.length > 0) {
                         const transactions = rs.rows._array;
                         resolve(transactions);
                     } else {
-                        resolve(null); // ei löytynyt
+                        resolve(null);
                     }
                 });
             }, 
@@ -163,20 +229,16 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
         });
     }
 
+    //sell stock using FIFO principle
     const sellStock = async (existingStock : number, sellQuota: number) => {
-        
-        console.log('Existing stock:', existingStock);
 
         const buyTransactions  = await getStockTransactions(existingStock, 'Buy') as Transaction[];
 
-        console.log('Buy transactions:', buyTransactions);
-
         if (!buyTransactions) {
-            console.log('No buy transactions found');
-            return; // Exit the function if there are no buy transactions
+    
+            return; 
         }
 
-        //jostain syystä sellQuantity on string, muutetaan numberiksi
         let sellQuantity : number = Number(sellQuota)
 
         for (let i = 0; i < buyTransactions.length; i++) {
@@ -187,15 +249,11 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
                 break;
             }
 
-            console.log('Typeof buyQuantity:', typeof buyQuantity);
-            console.log('Typeof sellQuantity:', typeof sellQuantity);
-
+            // If the buy quantity is greater than or equal to the sell quantity
             if (buyQuantity >= sellQuantity) {
 
-                console.log('buyQuantity covers sellQuota', buyQuantity, sellQuantity)
-
+                // If the buy quantity is equal to the sell quantity - delete buy transaction in question
                 if (buyQuantity === sellQuantity) {
-                    console.log('buyQuantity equals sellQuota, deleting transaction');
 
                     await new Promise<void>((resolve, reject) => {
                         db.transaction(
@@ -203,24 +261,23 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
                                 tx.executeSql(
                                     `DELETE FROM Transactions WHERE id = ?`, [id],
                                     (_tx: SQLite.SQLTransaction, rs: SQLite.SQLResultSet) => {
-                                        console.log('Transaction deleted');
-                                        resolve(); // Resolve the promise when the transaction is completed
+                                        //console.log('Transaction deleted');
+                                        resolve();
                                     });
                             },
                             (err: SQLite.SQLError) => {
                                 console.log(err);
                                 setErrors((prevErrors) => ({ ...prevErrors, failure: 'Failed to sell stock' }));
-                                reject(err); // Reject the promise if an error occurs
+                                reject(err); 
                             }
                         );
                     });
 
-                    console.log('Setting sellQuantity to 0');
                     sellQuantity = 0;
 
                 } else {
-                    console.log('buyQuantity larger than sellQuantity updating transaction');
 
+                    // If the buy quantity is greater than the sell quantity - update the buy transaction
                     await new Promise<void>((resolve, reject) => {
                         db.transaction(
                             (tx: SQLite.SQLTransaction) => {
@@ -231,44 +288,39 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
                                         WHERE id = ?`, 
                                     [buyQuantity - sellQuantity, sellQuantity, id],
                                     (_tx: SQLite.SQLTransaction, rs: SQLite.SQLResultSet) => {
-                                        console.log('Transaction updated');
-                                        resolve(); // Resolve the promise when the transaction is completed
+                                        resolve(); 
                                     });
                             },
                             (err: SQLite.SQLError) => {
                                 console.log(err);
                                 setErrors((prevErrors) => ({ ...prevErrors, failure: 'Failed to sell stock' }));
-                                reject(err); // Reject the promise if an error occurs
+                                reject(err);
                             }
                         );
                     });
 
-                    console.log('Setting sellQuantity to 0');
                     sellQuantity = 0;
                 }
             
             } else {
-                console.log('buyQuantity smaller than sellQuantity, deleting transaction');
-
+                // If the buy quantity is less than the sell quantity - delete the buy transaction
                 await new Promise<void>((resolve, reject) => {
                     db.transaction(
                         (tx: SQLite.SQLTransaction) => {
                             tx.executeSql(
                                 `DELETE FROM Transactions WHERE id = ?`, [id],
                                 (_tx: SQLite.SQLTransaction, rs: SQLite.SQLResultSet) => {
-                                    console.log('Transaction deleted');
-                                    resolve(); // Resolve the promise when the transaction is completed
+                                    //console.log('Transaction deleted');
+                                    resolve(); 
                                 });
                         },
                         (err: SQLite.SQLError) => {
                             console.log(err);
                             setErrors((prevErrors) => ({ ...prevErrors, failure: 'Failed to sell stock' }));
-                            reject(err); // Reject the promise if an error occurs
+                            reject(err); 
                         }
                     );
                 });
-
-                console.log('Subtracting buyQuantity from sellQuantity');
 
                 sellQuantity -= buyQuantity;
             }
@@ -276,16 +328,16 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
 
     }
 
+    // Insert a new stock to the database
     const insertNewStock = async (transaction : any) => {
 
-        console.log('Inserting new stock');
+        const price = parseFloat(transaction.price.replace(',', '.'));
+        const quantity = parseInt(transaction.quantity);
+        const fees = parseFloat(transaction.fees.replace(',', '.'));
 
-        const totalAmount = (Number(transaction.price) * Number(transaction.quantity)) + Number(transaction.fees);
+        const totalAmount = (price * quantity) + fees;
 
-        const avgPrice = (totalAmount) / Number(transaction.quantity);
-
-        console.log('totalAmount:', totalAmount);
-        console.log('avgPrice:', avgPrice);
+        const avgPrice = totalAmount / quantity;
 
         db.transaction(
             (tx : SQLite.SQLTransaction) => {
@@ -294,7 +346,7 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
                 VALUES (?, ?, ?, ?)`,
                 [transaction.symbol, transaction.name, avgPrice, transaction.quantity], 
                 (_tx : SQLite.SQLTransaction, rs : SQLite.SQLResultSet) => {
-                    console.log('Transaction inserted successfully');
+                    //console.log('Stock inserted successfully');
                     setErrors({});
                 });
             }, 
@@ -308,15 +360,16 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
 
     }
 
-
+    // Insert a new transaction to the database
     const insertTransaction = async (stockId : number, transaction : any) => {
 
-        const totalAmount = (Number(transaction.price) * Number(transaction.quantity)) + Number(transaction.fees);
+        const price = parseFloat(transaction.price.replace(',', '.'));
+        const quantity = parseInt(transaction.quantity);
+        const fees = parseFloat(transaction.fees.replace(',', '.'));
 
-        const avgPrice = (totalAmount) / Number(transaction.quantity);
+        const totalAmount = (price * quantity) + fees;
 
-        console.log('totalAmount:', totalAmount);
-        console.log('avgPrice:', avgPrice);
+        const avgPrice = totalAmount / quantity;
 
         return new Promise<void>((resolve, reject) => {
 
@@ -327,7 +380,6 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
                     VALUES (?, ?, ?, ?, ?, ?, ?)`,
                     [transaction.type, transaction.date, transaction.quantity, avgPrice, transaction.fees, totalAmount, stockId], 
                     (_tx : SQLite.SQLTransaction, rs : SQLite.SQLResultSet) => {
-                        console.log('Transaction inserted successfully');
                         setErrors({});
                         resolve();
                     });
@@ -344,10 +396,8 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
         });
     }
 
+    // Update stock data: calculate average price and total quantity
     const updateStockData = (stockId : number) => {
-        console.log('Updating stock data');
-
-        //const stockStatistics : { [stockId : number]: { totalQuantity : number, totalPrice : number } } = {};
     
         return new Promise<void>((resolve, reject) => {
             db.transaction(
@@ -356,30 +406,21 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
                         `SELECT stockId, quantity, totalAmount FROM Transactions WHERE type = 'Buy' AND stockId = ?`,
                         [stockId],
                         (tx, rs) => {
-                            //const stockStatistics = {};
+
                             let totalQuantity = 0;
                             let totalCost = 0;
     
                             for (let i = 0; i < rs.rows.length; i++) {
                                 const transaction = rs.rows.item(i);
-                                //const stockId = transaction.stockId;
                                 const quantity = transaction.quantity;
                                 const cost = transaction.totalAmount;
 
-                                console.log('cost in loop:', cost);
-
                                 totalQuantity += quantity;
                                 totalCost += cost;
-                                
-                                console.log('totalCost in loop:', totalCost);
-                                console.log('totalQuantity in loop:', totalQuantity);
                              
                             }
 
-                            console.log('totalQuantity in update:', totalQuantity);
-
                             const avgPrice = totalCost / totalQuantity;
-                            console.log('avgPrice in update:', avgPrice);
                         
                             db.transaction(
                                 (tx) => {
@@ -387,7 +428,7 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
                                         `UPDATE Stock SET avgPrice = ?, quantity = ? WHERE id = ?`,
                                         [avgPrice, totalQuantity, stockId],
                                         () => {
-                                            console.log('Stock updated for stockId:', stockId);
+                                            //console.log('Stock updated for stockId:', stockId);
                                             resolve();
                                         },
                                         (tx, err) => {
@@ -419,7 +460,7 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
         });
     };
     
-
+    //handles flow of adding a transaction
     const addTransaction = async (transaction : any) => {
         
         setIsLoading(true);
@@ -432,8 +473,6 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
 
             const existingStock = await getExistingStock(transaction.symbol) as number;
 
-            console.log('Existing stock in addTransaction:', existingStock);
-
             if (existingStock) {
 
                 if (transaction.type === 'Sell') {
@@ -441,27 +480,19 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
                     await sellStock(existingStock, transaction.quantity);
                 }
 
-                //insert transaction to transactions table
-                await insertTransaction(existingStock, transaction);
-
-                
+                await insertTransaction(existingStock, transaction);    
                 
             } else {
-                //täysin uusi osake salkkuun
                 
                 await insertNewStock(transaction);
 
-                //insert transaction to transactions table
                 newStockId = await getExistingStock(transaction.symbol) as number;
                 await insertTransaction(newStockId, transaction);
 
-                //haetaan salkku ja exit, ei tarvetta enää päivittää arvoja
                 await getPortfolio();
                 return;
             }
 
-            //update stock data
-            await updateStockData(existingStock || newStockId);
             await updateStockData(existingStock);
 
             await getPortfolio();
@@ -479,6 +510,7 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
 
     }
 
+    //get latest stock values from alphavantage
     const getValues = async () => {
        
         const symbols = stocksList.map((stock) => stock.symbol);
@@ -499,9 +531,9 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
                 const closeValue = timeSeries[latestDate]["4. close"];
                 return { symbol, closeValue };
             });
-    
 
             setCloseValues(stockCloseValues);
+            setErrors({});
 
         } catch (error) {
             console.error(error);
@@ -510,18 +542,17 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
 
     }
 
+    //get portfolio data from the database
     const getPortfolio = async () => {
 
-        console.log('Getting portfolio');
-        
         setIsLoading(true);
         setErrors((prevErrors) => ({ ...prevErrors, failure: '' }));
 
         try {
 
+            // Stock table
             db.transaction(
                 (tx : SQLite.SQLTransaction) => {
-                  //ensin sql-lause, kyselyparametrit arrayna, käsittelijä tuloksille (nuolifunktona)
                   tx.executeSql(`SELECT * FROM Stock`, [], 
                     (_tx : SQLite.SQLTransaction, rs : SQLite.SQLResultSet) => {
                       setStocksList(rs.rows._array);
@@ -535,14 +566,13 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
                 }
             );
             
-            //tarkastetaan missä transaktioissa mennään
+            //Transactions table
             db.transaction(
                 (tx : SQLite.SQLTransaction) => {
-                  //ensin sql-lause, kyselyparametrit arrayna, käsittelijä tuloksille (nuolifunktona)
                   tx.executeSql(`SELECT * FROM Transactions`, [], 
                     (_tx : SQLite.SQLTransaction, rs : SQLite.SQLResultSet) => {
                       setTransactionData(rs.rows._array);
-                      setErrors({});
+                      //setErrors({});
                     });
                 }, 
                 (err: SQLite.SQLError) => {
@@ -561,9 +591,7 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
         } finally {
 
             setIsLoading(false);
-        }
-
-        
+        } 
         
     }
     
@@ -595,7 +623,8 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
                                             isLoading,
                                             closeValues,
                                             getValues,
-                                            transactionData
+                                            transactionData,
+                                            calculateStockValue
                                         }}>  
             {props.children}        
         </PortfolioContext.Provider>
