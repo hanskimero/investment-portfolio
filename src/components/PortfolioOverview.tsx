@@ -12,21 +12,26 @@ const PortfolioOverview : React.FC = () : React.ReactElement => {
     let portfolioTotal = 0;
     let totalAvgPrice = 0;
 
+    const defaultResult = {
+      totalValue: 'Please get updated values',
+      difference: null,
+      percentageChange: null,
+      percentageChangeStyle: null
+  };
+
     if (!closeValues || closeValues.length === 0) {
-      return {
-          totalValue: 'Please get updated values',
-          difference: null,
-          percentageChange: null
-      };
+      return defaultResult;
     }
 
     stocksList.forEach((stock) => {
         const closeValueObj = closeValues.find((item) => item.symbol === stock.symbol);
 
-        if (closeValueObj) {
-            const value = parseFloat(closeValueObj.closeValue) * stock.quantity;
-            portfolioTotal += value;
+        if (!closeValueObj || !closeValueObj.closeValue) {
+            return defaultResult
         }
+
+        const value = parseFloat(closeValueObj.closeValue) * stock.quantity;
+        portfolioTotal += value;
 
         totalAvgPrice += stock.avgPrice * stock.quantity;
       });
