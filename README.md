@@ -36,7 +36,7 @@ Dependencies can be installed by: npm install
 
 ## Usage
 - run and test the app using Expo Go
-- update your own alphavantage API key to constants
+- update your own alphavantage API key to PortfolioContext
 - the app will not automatically fetch close values, since API free version only allows 25 fetches per day - take this into consideration
 
 ## License
