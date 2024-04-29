@@ -33,9 +33,8 @@ interface Props {
     children : React.ReactNode;
 }
 
-const API_KEY : string = "V32DHHM2L02ITXRP"
-
-//const API_KEY = Constants?.expoConfig?.extra?.ALPHA_VANTAGE_API_KEY;
+//assign your Alpha Vantage API KEY here
+//const API_KEY : string = ""
 
 export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactElement => {
 
