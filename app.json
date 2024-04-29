@@ -15,7 +15,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "so3-test"
     },
     "android": {
       "adaptiveIcon": {
@@ -26,8 +27,10 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "env": {
-      "ALPHA_VANTAGE_API_KEY": "V32DHHM2L02ITXRP"
+    "extra": {
+      "eas": {
+        "projectId": "d8e24c0f-b86d-4424-9f4d-7c037a7f4263"
+      }
     }
   }
 }

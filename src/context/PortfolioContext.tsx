@@ -1,5 +1,4 @@
 import React, { createContext, useEffect, useRef, useState } from 'react';
-import Constants from "expo-constants";
 import * as SQLite from 'expo-sqlite';
 import { db, initDatabase } from '../database';
 
@@ -34,7 +33,9 @@ interface Props {
     children : React.ReactNode;
 }
 
-const API_KEY = Constants?.expoConfig?.extra?.ALPHA_VANTAGE_API_KEY;
+const API_KEY : string = "V32DHHM2L02ITXRP"
+
+//const API_KEY = Constants?.expoConfig?.extra?.ALPHA_VANTAGE_API_KEY;
 
 export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactElement => {
 
@@ -115,7 +116,7 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
         }
 
         if (/^00|^0\d+/.test(trimmedFee)) {
-            setErrors((prevErrors) => ({ ...prevErrors, fee: 'Please enter a valid price' }));
+            setErrors((prevErrors) => ({ ...prevErrors, fee: 'Please enter a valid number' }));
             return false;
         }
         
@@ -130,37 +131,27 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
         return true;
     }
 
-    const calculateStockValue = (stock : StockInfo) => {
-      
-        let percentageChange : number = NaN;
-  
+    const calculateStockValue = (stock: StockInfo) => {
         if (!closeValues || closeValues.length === 0) {
-          return {
-              value: 'N/A',
-              percentageChange: null,
-              percentageChangeStyle: null
-          };
-        }
-  
-        const closeValueObj = closeValues.find((item: any) => item.symbol === stock.symbol);
-        const value = closeValueObj ? parseFloat(closeValueObj.closeValue) * stock.quantity : stock.quantity * stock.avgPrice;
-        
-        if (closeValueObj) {
-          percentageChange = ((value - (stock.quantity * stock.avgPrice)) / (stock.quantity * stock.avgPrice)) * 100;
-        } else {
-            return{
+            return {
                 value: 'N/A',
                 percentageChange: null,
                 percentageChangeStyle: null
-            }
+            };
         }
-        
-        let percentageChangeStyle : 'positive' | 'negative' | null;
-        if (!isNaN(percentageChange)) {
-          percentageChangeStyle = percentageChange >= 0 ? 'positive' : 'negative';
-        } else {
-          percentageChangeStyle = null;
+    
+        const closeValueObj = closeValues.find((item: any) => item.symbol === stock.symbol);
+        if (!closeValueObj || !closeValueObj.closeValue) {
+            return {
+                value: 'N/A',
+                percentageChange: null,
+                percentageChangeStyle: null
+            };
         }
+    
+        const value = parseFloat(closeValueObj.closeValue) * stock.quantity;
+        const percentageChange = ((value - (stock.quantity * stock.avgPrice)) / (stock.quantity * stock.avgPrice)) * 100;
+        const percentageChangeStyle: 'positive' | 'negative' | null = !isNaN(percentageChange) ? (percentageChange >= 0 ? 'positive' : 'negative') : null;
     
         return {
             value: value.toLocaleString('fi-FI', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' USD',
@@ -168,6 +159,7 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
             percentageChangeStyle: percentageChangeStyle
         };
     };
+    
 
     // Get the stockId of an existing stock
     const getExistingStock = async (symbol : string) => {
@@ -192,6 +184,7 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
 
                 console.log(err);
                 setErrors((prevErrors) => ({ ...prevErrors, failure: 'Some error' }));
+                reject(err);
         
             }
         );
@@ -222,6 +215,7 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
 
                 console.log(err);
                 setErrors((prevErrors) => ({ ...prevErrors, failure: 'Some error' }));
+                reject(err);
         
             }
         );
@@ -517,20 +511,37 @@ export const PortfolioProvider: React.FC<Props> = (props: Props): React.ReactEle
 
         try {
 
-            const requests = symbols.map((symbol : any) => 
-                fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${symbol}&apikey=${API_KEY}`));
-
-            const responses = await Promise.all(requests);
-            const jsonData = await Promise.all(responses.map((response) => response.json()));
+            const requests = symbols.map((symbol) =>
+                fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${symbol}&apikey=${API_KEY}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`Failed to fetch data for symbol ${symbol}`);
+                        }
+                        return response.json();
+                    })
+            );
             
-            const stockCloseValues = jsonData.map((stockData, index) => {
-                const symbol = symbols[index];
-                const timeSeries = stockData["Time Series (Daily)"];
-                const dates = Object.keys(timeSeries).sort((a, b) => new Date(b).getTime() - new Date(a).getTime());
-                const latestDate = dates[0];
-                const closeValue = timeSeries[latestDate]["4. close"];
-                return { symbol, closeValue };
-            });
+            const stockCloseValues = await Promise.all(requests)
+            .then(responses =>
+                responses.map((stockData, index) => {
+                    const symbol = symbols[index];
+                    if (!stockData || !stockData["Time Series (Daily)"]) {
+                        throw new Error(`Data not available for symbol ${symbol}`);
+                    }
+                    const timeSeries = stockData["Time Series (Daily)"];
+                    const dates = Object.keys(timeSeries).sort((a, b) => new Date(b).getTime() - new Date(a).getTime());
+                    if (dates.length === 0) {
+                        throw new Error(`No data available for symbol ${symbol}`);
+                    }
+                    const latestDate = dates[0];
+                    const closeValue = timeSeries[latestDate]["4. close"];
+                    if (!closeValue) {
+                        throw new Error(`Close value not available for symbol ${symbol}`);
+                    }
+                    return { symbol, closeValue };
+                })
+            );
+
 
             setCloseValues(stockCloseValues);
             setErrors({});
