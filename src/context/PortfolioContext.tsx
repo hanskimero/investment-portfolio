@@ -1,5 +1,4 @@
 import React, { createContext, useEffect, useRef, useState } from 'react';
-import Constants from "expo-constants";
 import * as SQLite from 'expo-sqlite';
 import { db, initDatabase } from '../database';
 
